@@ -1,0 +1,47 @@
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  function sendit(data)
+  {
+    $.ajax({
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Content-Type', 'application/json');
+            },
+            url: 'index.php',
+            type: 'POST',
+            processData: false,
+            data: data,
+            success: function(data){
+                alert(data);
+            }
+         });
+    return false;
+  }
+  </script>
+</head>
+<body>
+  <form action="index.php" method="post">
+    <textarea name="data" rows="10" cols="50"></textarea>
+    <input type="submit" value="submit" onclick="return sendit(this.form.data.value);" />
+  </form>
+  
+  <h2>Sample calls</h2>
+  <p>Create an account: {"action":"account_create","data":{"email":"test@test.com","password":"test"}}</p>
+  <p>Logout: {"action":"logout","data": {"login_token":"+aOapyC/TeJ/NrCc2EIt+OS5D8A25cheX4XiVPaX6zw="}}</p>
+  <p>Login: {"action":"login","data": {"email":"test@test.com","password":"test"}}</p>
+  <p>User agency list: {"action":"user_agency_list","data":{"login_token":"040b7cf4a55014e185813e0644502ea9"}}</p>
+  <p>Agency project list: {"action":"agency_project_list","data":{"login_token":"WVOce3K/0nn0dfj3mpxNjCiU9Xll/4JQOqICHz9E65c=","agency_id":1}}</p>
+  <p>All agency list: {"action":"all_agency_list","data": {"login_token":"+aOapyC/TeJ/NrCc2EIt+OS5D8A25cheX4XiVPaX6zw="}}</p>  
+  <p>User follow agency: {"action":"user_follow_agency","data": {"login_token":"gbITdaF/vCDIasXB/SMwctrGBeXMntzHsUz7AIOGf1c=","agency_id":1}}</p>
+  <p>User remove agency: {"action":"user_remove_agency","data": {"login_token":"gbITdaF/vCDIasXB/SMwctrGBeXMntzHsUz7AIOGf1c=","agency_id":1}}</p>
+  <p>User set agency order: {"action":"user_set_agency_order","data":{"login_token":"gbITdaF/vCDIasXB/SMwctrGBeXMntzHsUz7AIOGf1c=","agency_list":[1,2,3,4]}}</p>
+  <p>User project map list: {"action":"user_project_map_list","data":{"login_token":"hIIDXlYLRipUS1QM4zsSMZyi8q1vApjYRi88p3DBZxc="}}</p>
+  <p>User project detail: {"action":"user_project_detail","data":{"login_token":"hIIDXlYLRipUS1QM4zsSMZyi8q1vApjYRi88p3DBZxc=", "id":13}}</p>
+  <p>FB create account or login: {"action":"fb_account_create_or_login","data":{"email":"test@test.com","gender":"m","location":"Seattle,WA","hometown":"Los Angeles,CA","political":"Liberal","birthday":"07/05/1983","education":"1999-2001 BA Liberal Arts, Seattle University, 2002-2003 MA Political Science, Oregon University"}}</p>
+  <p>Project poll questions: {"action":"project_poll_questions","data": {"login_token":"rCsLFEvULjXq4rIa6s5Zbv70WIw+X0Ql+ZS8OvByIG4=","id":13}}</p>
+  <p>User poll submit: {"action":"user_poll_submit","data": {"login_token":"rCsLFEvULjXq4rIa6s5Zbv70WIw+X0Ql+ZS8OvByIG4=","id":13,"answers":{"20":3,"21":4}}}</p>
+  <p>User clear polls [DEVELOPMENT ONLY]: {"action":"user_clear_polls","data": {"login_token":"rCsLFEvULjXq4rIa6s5Zbv70WIw+X0Ql+ZS8OvByIG4="}}</p>
+  <p>Project answers: {"action":"project_answers","data": {"login_token":"TT2VO2cd4hLsHJMcwSYk2KQ\/S2ZEWlBdWdNirKG4wIk=","id":13}}</p>
+</body>
+</html>

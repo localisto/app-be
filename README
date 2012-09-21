@@ -1,0 +1,8 @@
+In order to get this working:
+
+a. ensure you've got mcrypt installed
+b. create a database and populate it with db_schema.sql and test_data.sql
+c. copy sample.config.php to config.php and change the right variables
+d. download PHPMailer and create a symlink to it in this directory
+
+That should be it!
