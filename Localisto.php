@@ -347,9 +347,15 @@ class Localisto
    */
   public function action_user_project_map_list($data)
   {
-    $stmt = $this->pdo->prepare('select id, title, coordinates, location, meeting_time from project where coordinates is not null and meeting_starts is not null');
-    $stmt->execute();
+    $stmt = $this->pdo->prepare('select id, title, coordinates, location, meeting_time from project where coordinates is not null and meeting_starts is not null and disabled = 0 and agency_id in (select agency_id from user_agency where user_id = :user_id)');
+    $result = $stmt->execute(array('user_id' => $this->user_id));
 
+    if ($result === FALSE)
+    {
+      $error = $stmt->errorInfo();
+      throw new LocalistoException($error[2]);
+    }
+ 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if ($results === FALSE)
@@ -383,7 +389,7 @@ class Localisto
     
     $project_id = validate_int($data['id']);
 
-    $stmt = $this->pdo->prepare('select id, title, location, coordinates, meeting_time, survey_closes, description, fb_page_url from project where id = :project_id limit 1');
+    $stmt = $this->pdo->prepare('select id, title, location, coordinates, meeting_time, survey_closes, has_survey, description, fb_page_url from project where id = :project_id limit 1');
     $stmt->execute(array('project_id' => $project_id));
 
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -397,7 +403,7 @@ class Localisto
     $project = array('id' => $result['id'],
                       'name' => $result['title'],
                       'meeting_datetime' => $result['meeting_time'],
-                      'survey_closes' => $result['survey_closes'] ? ios_date_format(strtotime($result['survey_closes'])) : null,
+                      'survey_closes' => $result['has_survey'] ? ios_date_format(strtotime($result['survey_closes'])) : null,
 		      'coords' => $result['coordinates'],
                       'location' => $result['location'],
                       'description' => $result['description'],
